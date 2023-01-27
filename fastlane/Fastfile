@@ -30,9 +30,9 @@ platform :android do
     # You can also use other beta testing services here
   end
 
-  desc "Submit a new Internal Test Build to Crashlytics Beta"
+  desc "Submit a new Internal Test Build"
   lane :internal do
-    gradle(task: "assembleRelease")
+    gradle(task: "assembleRelease --parallel --configure-on-demand")
   end
 
   desc "Deploy a new version to the Google Play"
