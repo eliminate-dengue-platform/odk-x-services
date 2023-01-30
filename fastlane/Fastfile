@@ -33,6 +33,7 @@ platform :android do
   desc "Submit a new Internal Test Build"
   lane :internal do
     gradle(task: "assembleRelease --parallel --configure-on-demand")
+    upload_to_play_store(track: "internal")
   end
 
   desc "Deploy a new version to the Google Play"
