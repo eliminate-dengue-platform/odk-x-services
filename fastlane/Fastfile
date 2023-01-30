@@ -32,9 +32,26 @@ platform :android do
 
   desc "Submit a new Internal Test Build"
   lane :internal do
-    gradle(task: "assembleRelease --parallel --configure-on-demand")
-    upload_to_play_store(track: "internal")
+      previous_build_number = google_play_track_version_codes(
+        track: "internal",
+      )[0]
+      current_build_number = previous_build_number + 1
+    gradle(
+    task: "assembleRelease --parallel --configure-on-demand",
+      properties: {
+        "android.injected.version.code" => current_build_number,
+        "android.injected.signing.store.file" => ENV["KEYSTORE"],
+        "android.injected.signing.store.password" => ENV["KEYSTORE_PASSWORD"],
+        "android.injected.signing.key.alias" => ENV["KEY_ALIAS"],
+        "android.injected.signing.key.password" => ENV["KEY_PASSWORD"]
+      }
+      )
+    upload_to_play_store(
+        track: "internal",
+        release_status: "draft"
+    )
   end
+
 
   desc "Deploy a new version to the Google Play"
   lane :deploy do
