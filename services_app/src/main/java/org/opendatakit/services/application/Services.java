@@ -23,6 +23,8 @@ import org.opendatakit.application.ToolAwareApplication;
 import org.opendatakit.services.R;
 
 import java.lang.ref.WeakReference;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
 
 public final class Services extends ToolAwareApplication implements IToolAware {
 
@@ -48,7 +50,7 @@ public final class Services extends ToolAwareApplication implements IToolAware {
         sslContext.init(null, null, null);
         HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
     } catch (Exception e) {
-        Log.e("Services", "Error setting TLSv1.2", e);
+        // ignore if android device doesn't support TLS version 1.2.
     }
   }
 
