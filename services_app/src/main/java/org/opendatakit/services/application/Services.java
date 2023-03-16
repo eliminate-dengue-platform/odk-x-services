@@ -42,6 +42,14 @@ public final class Services extends ToolAwareApplication implements IToolAware {
 
     analytics = FirebaseAnalytics.getInstance(this);
     analytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, null);
+
+    try {
+        SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
+        sslContext.init(null, null, null);
+        HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
+    } catch (Exception e) {
+        Log.e("Services", "Error setting TLSv1.2", e);
+    }
   }
 
   @Deprecated public static Context _please_dont_use_getInstance() {
